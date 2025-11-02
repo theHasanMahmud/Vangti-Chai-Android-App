@@ -1,45 +1,131 @@
-# VangtiChai
+# VangtiChai – Responsive Change Calculator
 
-Responsive Flutter implementation of the CSE 489 Assignment 1 change-calculator app. The app lets users enter an amount using a custom numeric keypad and shows the minimum number of Bangladeshi Taka notes (500, 100, 50, 20, 10, 5, 2, 1) required to make that amount.
+Bangladeshi Taka change calculator built with Flutter for the CSE 489 Assignment 1. Enter an amount with a custom keypad and instantly see the minimum number of notes required.
 
-## Project Highlights
-- Custom keypad built from scratch; supports append, clear, and backspace interactions.
-- Responsive layouts tailored for phones and tablets in both portrait and landscape orientations using `OrientationBuilder`, `LayoutBuilder`, and adaptive flex ratios.
-- State preserved automatically when rotating the device, because the amount and change breakdown live in the widget's `State`.
-- Consistent spacing and typography expressed as Dart constants (mirrors the "no hard-coded XML values" requirement).
-- Material 3 styling with tonal/elevated buttons for better affordance.
+![Flutter](https://img.shields.io/badge/Flutter-3.13+-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-3.2+-0175C2?style=for-the-badge&logo=dart&logoColor=white)
+![Material3](https://img.shields.io/badge/Material_Design-3-757575?style=for-the-badge&logo=material-design&logoColor=white)
+
+---
+
+## Key Features
+
+### Change Calculation
+- Greedy denomination breakdown (500, 100, 50, 20, 10, 5, 2, 1) guarantees the minimum number of notes.
+- Live recalculation whenever the keypad input changes.
+- Uses `intl` formatting for a readable, locale-aware amount display.
+
+### Custom Input Experience
+- Numeric keypad purpose-built for the assignment with append, clear, and backspace actions.
+- Grid layout automatically adapts button aspect ratio to fit the available space.
+- Buttons leverage Material 3 tonal, filled, and outlined variants for strong affordance.
+
+### Responsive Layout
+- Portrait layout stacks amount display over side-by-side change summary and keypad panels.
+- Landscape layout keeps both panels visible while anchoring the amount to the left.
+- `LayoutBuilder` and `OrientationBuilder` drive dynamic flex ratios so the UI feels balanced on phones and tablets.
+
+### Assignment-Friendly Codebase
+- Consistent spacing, typography, and sizing constants avoid hard-coded magic numbers.
+- State held in the widget tree to survive orientation changes without additional work.
+- Single-file implementation keeps review straightforward for instructors.
+
+---
+
+## Tech Stack
+
+- **Framework:** Flutter (Material 3, Widgets, LayoutBuilder)
+- **Language:** Dart 3
+- **Packages:** `intl` for number formatting
+- **Tooling:** Flutter CLI, Dart formatter
+
+---
+
+## Screenshots
+
+> Capture emulator screenshots (portrait and landscape, phone and tablet) and place them in `docs/images/`, then reference them here.
+```
+![Phone Portrait](docs/images/phone-portrait.png)
+![Tablet Landscape](docs/images/tablet-landscape.png)
+```
+
+---
+
+## Project Structure
+
+```
+vangti-chai-mobile-app/
+├── lib/
+│   └── main.dart        # Entire Flutter UI + business logic
+├── android/             # Generated Android host
+├── ios/                 # Generated iOS host
+├── web/                 # Flutter web support
+├── linux/, macos/, windows/
+├── pubspec.yaml         # Dependencies and assets
+└── README.md
+```
+
+---
 
 ## Getting Started
-1. Ensure you have the Flutter SDK (3.13 or newer recommended) installed and an emulator/device available.
-2. From the project root:
-   ```bash
-   flutter pub get
-   flutter run
-   ```
-3. Choose an emulator that matches the assignment targets:
-   - Pixel XL (411x731 dp) - portrait and landscape.
-   - Nexus 10 tablet (800x1280 dp) - portrait and landscape.
 
-If you created this directory without running `flutter create`, run the following once to add missing platform folders before executing the steps above:
+### Prerequisites
+- Flutter SDK 3.13 or newer (`flutter --version`)
+- Dart SDK (bundled with Flutter)
+- Android Emulator or physical device (Pixel XL and Nexus 10 are assignment targets)
+
+### Installation
+```bash
+git clone https://github.com/theHasanMahmud/Vangti-Chai-Android-App.git
+cd "Vangti Chai Mobile App"
+flutter pub get
+```
+
+### Run the App
+```bash
+flutter run
+```
+
+If the project was downloaded without platform folders, bootstrap them once:
 ```bash
 flutter create .
 ```
 
-## Testing Notes
-- Designed against the Pixel XL and Nexus 10 size classes using Flutter's layout tools.
-- Please verify on real emulators/devices as part of submission; this environment does not include the Android emulator, so runtime validation could not be executed here.
-- Other helpful checks: `flutter analyze` and `flutter test`.
+---
 
-## Implementation Overview
-- `lib/main.dart`: Contains the entire app.
-  - `_VangtiChaiHomeState` handles keypad input, state persistence, and change calculation.
-  - `_ChangeSummary` renders the note table with subtle opacity changes when counts are zero.
-  - `_NumericKeypad` lays out eleven buttons in a 4x3 grid using custom stateless widgets.
-  - Layout logic uses a portrait column with side-by-side panels, and a landscape row with an embedded column to satisfy the "slightly altered" requirement.
-- The change calculation performs integer division for each denomination in descending order, guaranteeing the minimal number of notes.
-- Formatting uses the `intl` package (`NumberFormat.decimalPattern`) for a readable amount display.
+## Testing and Quality Checks
 
-## Future Enhancements
-1. Add widget tests for keypad input and change-calculation edge cases.
-2. Localize the UI (e.g., Bangla strings, `NumberFormat` locale).
-3. Provide accessibility hints for VoiceOver/TalkBack users.
+```bash
+flutter analyze        # Static analysis
+flutter test           # Widget/unit tests (add as needed)
+```
+
+Manual validation: rotate between portrait/landscape, switch between phone and tablet devices, and confirm change breakdown accuracy for edge values (0, single-digit, max 9-digit input).
+
+---
+
+## How It Works
+
+1. `_appendDigit`, `_clearAmount`, and `_backspace` mutate `_amount` while guarding against overflows and leading zeros.
+2. `_noteBreakdown` recalculates the denomination counts on every build using integer division and subtraction.
+3. `_ChangeSummary` lists each denomination with an opacity hint for unused notes.
+4. `_NumericKeypad` renders an adaptive `GridView` so buttons scale smoothly across screen sizes.
+
+---
+
+## Roadmap
+
+1. Add automated widget tests for keypad interactions and change output.
+2. Localize copy in Bangla and English.
+3. Layer accessibility hints for screen readers.
+4. Persist recent amounts for quick reuse.
+
+---
+
+## Contact
+
+Questions or feedback? Reach out at `hasanmahmudmajumder@gmail.com`.
+
+---
+
+If this project helps you, consider starring the repository and sharing it with classmates.
