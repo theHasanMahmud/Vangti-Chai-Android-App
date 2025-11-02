@@ -48,12 +48,8 @@ Bangladeshi Taka change calculator built with Flutter for the CSE 489 Assignment
 ---
 
 ## Screenshots
+<img width="442" height="796" alt="image" src="https://github.com/user-attachments/assets/a096a28d-2ab2-4f0e-b395-024731ecaa69" />
 
-> Capture emulator screenshots (portrait and landscape, phone and tablet) and place them in `docs/images/`, then reference them here.
-```
-![Phone Portrait](docs/images/phone-portrait.png)
-![Tablet Landscape](docs/images/tablet-landscape.png)
-```
 
 ---
 
