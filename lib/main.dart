@@ -1,4 +1,3 @@
-
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -9,6 +8,10 @@ const double kSectionSpacing = 16.0;
 const double kCardPadding = 16.0;
 const double kButtonSpacing = 8.0;
 const int kMaxDigits = 9;
+const double kPhoneChangeCardMaxWidth = 320.0;
+const double kTabletChangeCardMaxWidth = 440.0;
+const double kPhoneKeypadMaxWidth = 340.0;
+const double kTabletKeypadMaxWidth = 480.0;
 
 void main() {
   runApp(const VangtiChaiApp());
@@ -50,13 +53,11 @@ class _VangtiChaiHomeState extends State<VangtiChaiHome> {
 
   List<_NoteBreakdown> get _noteBreakdown {
     var remaining = _amount;
-    return _denominations
-        .map((value) {
-          final count = remaining ~/ value;
-          remaining -= count * value;
-          return _NoteBreakdown(value: value, count: count);
-        })
-        .toList(growable: false);
+    return _denominations.map((value) {
+      final count = remaining ~/ value;
+      remaining -= count * value;
+      return _NoteBreakdown(value: value, count: count);
+    }).toList(growable: false);
   }
 
   void _appendDigit(int digit) {
@@ -125,7 +126,9 @@ class _VangtiChaiHomeState extends State<VangtiChaiHome> {
                   alignment: Alignment.topCenter,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxWidth: isTablet ? 420 : 280,
+                      maxWidth: isTablet
+                          ? kTabletChangeCardMaxWidth
+                          : kPhoneChangeCardMaxWidth,
                     ),
                     child: _ChangeSummary(
                       amount: _amount,
@@ -137,10 +140,20 @@ class _VangtiChaiHomeState extends State<VangtiChaiHome> {
               const SizedBox(width: kSectionSpacing),
               Expanded(
                 flex: isTablet ? 6 : 5,
-                child: _NumericKeypad(
-                  onDigitPressed: _appendDigit,
-                  onClearPressed: _clearAmount,
-                  onBackspacePressed: _backspace,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: isTablet
+                          ? kTabletKeypadMaxWidth
+                          : kPhoneKeypadMaxWidth,
+                    ),
+                    child: _NumericKeypad(
+                      onDigitPressed: _appendDigit,
+                      onClearPressed: _clearAmount,
+                      onBackspacePressed: _backspace,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -154,7 +167,7 @@ class _VangtiChaiHomeState extends State<VangtiChaiHome> {
     return Row(
       children: [
         Expanded(
-          flex: isTablet ? 5 : 4,
+          flex: isTablet ? 4 : 3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -166,7 +179,9 @@ class _VangtiChaiHomeState extends State<VangtiChaiHome> {
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final maxCardWidth = isTablet ? 460.0 : 320.0;
+                    final maxCardWidth = isTablet
+                        ? kTabletChangeCardMaxWidth
+                        : kPhoneChangeCardMaxWidth;
                     final availableWidth = constraints.maxWidth.isFinite
                         ? constraints.maxWidth
                         : maxCardWidth;
@@ -200,11 +215,20 @@ class _VangtiChaiHomeState extends State<VangtiChaiHome> {
         ),
         const SizedBox(width: kSectionSpacing),
         Expanded(
-          flex: isTablet ? 5 : 4,
-          child: _NumericKeypad(
-            onDigitPressed: _appendDigit,
-            onClearPressed: _clearAmount,
-            onBackspacePressed: _backspace,
+          flex: isTablet ? 6 : 5,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth:
+                    isTablet ? kTabletKeypadMaxWidth : kPhoneKeypadMaxWidth,
+              ),
+              child: _NumericKeypad(
+                onDigitPressed: _appendDigit,
+                onClearPressed: _clearAmount,
+                onBackspacePressed: _backspace,
+              ),
+            ),
           ),
         ),
       ],
@@ -364,8 +388,7 @@ class _NumericKeypad extends StatelessWidget {
       label: 'Clear',
       onPressed: onClearPressed,
       textStyle: textStyle?.copyWith(
-        fontSize:
-            textStyle.fontSize != null ? textStyle.fontSize! - 4 : null,
+        fontSize: textStyle.fontSize != null ? textStyle.fontSize! - 4 : null,
       ),
       isTonal: true,
     );
@@ -389,18 +412,15 @@ class _NumericKeypad extends StatelessWidget {
         padding: const EdgeInsets.all(kCardPadding),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final availableWidth = constraints.maxWidth.isFinite
-                ? constraints.maxWidth
-                : 0.0;
-            final availableHeight = constraints.maxHeight.isFinite
-                ? constraints.maxHeight
-                : 0.0;
+            final availableWidth =
+                constraints.maxWidth.isFinite ? constraints.maxWidth : 0.0;
+            final availableHeight =
+                constraints.maxHeight.isFinite ? constraints.maxHeight : 0.0;
 
             final cellWidth = (availableWidth - (kButtonSpacing * 2)) / 3;
             final cellHeight = (availableHeight - (kButtonSpacing * 3)) / 4;
-            final rawAspectRatio = cellWidth > 0 && cellHeight > 0
-                ? cellWidth / cellHeight
-                : 1.0;
+            final rawAspectRatio =
+                cellWidth > 0 && cellHeight > 0 ? cellWidth / cellHeight : 1.0;
             final childAspectRatio =
                 rawAspectRatio.isFinite && rawAspectRatio > 0
                     ? math.max(rawAspectRatio, 0.8)
