@@ -7,11 +7,12 @@ Bangladeshi Taka change calculator built with Flutter for the CSE 489 Assignment
 ![Material3](https://img.shields.io/badge/Material_Design-3-757575?style=for-the-badge&logo=material-design&logoColor=white)
 
 ---
-## Preview
-<img width="2940" height="1912" alt="Screenshot 2025-11-02 at 11 41 31 PM" src="https://github.com/user-attachments/assets/89572d6f-7b51-4ebb-b278-f8f2c1a43e4b" />
 
 ## [![Watch on YouTube](https://img.shields.io/badge/Watch%20on-YouTube-red?logo=youtube&logoColor=white)](https://youtu.be/5aVbnxNVuM4)
-[![Watch the video]](https://youtu.be/5aVbnxNVuM4)
+
+
+## Preview
+<img width="2940" height="1912" alt="Screenshot 2025-11-02 at 11 41 31 PM" src="https://github.com/user-attachments/assets/89572d6f-7b51-4ebb-b278-f8f2c1a43e4b" />
 
 ## Key Features
 
